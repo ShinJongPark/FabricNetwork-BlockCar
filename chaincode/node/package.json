@@ -1,0 +1,18 @@
+{
+    "name": "car_001_Serial",
+    "version": "1.0.0",
+    "description": "carSerial management chaincode",
+    "engines":{
+      "node": ">=8.4.0",
+      "npm": ">=5.3.0"
+    },
+    "scripts": {
+      "start": "node car_001_SerialManagement.js"
+    },
+    "engine-strict": true,
+    "engineStrict": true,
+    "license": "Apache-2.0",
+    "dependencies":{
+      "fabric-shim": "latest"
+    }
+}

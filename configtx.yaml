@@ -1,0 +1,178 @@
+Capabilities:
+        Global: &ChannelCapabilities
+          V1_3: true
+          V1_1: true
+        Orderer: &OrdererCapabilites
+          V1_1: true
+        Application: &ApplicationCapabilites
+          V1_3: true
+          V1_2: true
+          V1_1: true
+
+Organizations:
+        - &carAssociationOrg
+                Name: carAssociationOrgMSP
+                ID: carAssociationOrgMSP
+                MSPDir: ./carAssociationOrg/users/admin@carAssociationOrg/msp
+                AnchorPeers:
+                        - Host: peer0.carAssociationOrg
+                          Port: 7051
+                Policies: &carAssociationOrgPolicies
+                        Readers:
+                                Type: Signature
+                                Rule: "OR('carAssociationOrgMSP.member','carInsuranceOrgMSP.member','carMaintenanceOrgMSP.member')"
+                        Writers:
+                                Type: Signature
+                                Rule: "OR('carAssociationOrgMSP.member','carInsuranceOrgMSP.member','carMaintenanceOrgMSP.member')"
+                        Admins:
+                                Type: Signature
+                                Rule: "OR('carAssociationOrgMSP.admin','carInsuranceOrgMSP.admin','carMaintenanceOrgMSP.admin')"
+        - &carInsuranceOrg
+                Name: carInsuranceOrgMSP
+                ID: carInsuranceOrgMSP
+                MSPDir: ./carInsuranceOrg/users/admin@carInsuranceOrg/msp
+                AnchorPeers:
+                        - Host: peer0.carInsuranceOrg
+                          Port: 7051
+                Policies: &carInsuranceOrgPolicies
+                        Readers:
+                                Type: Signature
+                                Rule: "OR('carAssociationOrgMSP.member','carInsuranceOrgMSP.member','carMaintenanceOrgMSP.member')"
+                        Writers:
+                                Type: Signature
+                                Rule: "OR('carAssociationOrgMSP.member','carInsuranceOrgMSP.member','carMaintenanceOrgMSP.member')"
+                        Admins:
+                                Type: Signature
+                                Rule: "OR('carAssociationOrgMSP.admin','carInsuranceOrgMSP.admin','carMaintenanceOrgMSP.admin')"
+        - &carMaintenanceOrg
+                Name: carMaintenanceOrgMSP
+                ID: carMaintenanceOrgMSP
+                MSPDir: ./carMaintenanceOrg/users/admin@carMaintenanceOrg/msp
+                AnchorPeers:
+                        - Host: peer0.carMaintenanceOrg
+                          Port: 7051
+                Policies: &carMaintenanceOrgPolicies
+                        Readers:
+                                Type: Signature
+                                Rule: "OR('carAssociationOrgMSP.member','carInsuranceOrgMSP.member','carMaintenanceOrgMSP.member')"
+                        Writers:
+                                Type: Signature
+                                Rule: "OR('carAssociationOrgMSP.member','carInsuranceOrgMSP.member','carMaintenanceOrgMSP.member')"
+                        Admins:
+                                Type: Signature
+                                Rule: "OR('carAssociationOrgMSP.admin','carInsuranceOrgMSP.admin','carMaintenanceOrgMSP.admin')"
+
+        - &DefaultOrdererOrg
+                Name: defaultOrdererOrgMSP
+                ID: defaultOrdererOrgMSP
+                MSPDir: ./default-ordering-service/msp
+                Policies: &DefaultOrdererOrgPolicies
+                        Readers:
+                                Type: Signature
+                                Rule: "OR('defaultOrdererOrgMSP.member')"
+                        Writers:
+                                Type: Signature
+                                Rule: "OR('defaultOrdererOrgMSP.member')"
+                        Admins:
+                                Type: Signature
+                                Rule: "OR('defaultOrdererOrgMSP.admin')"
+
+Orderer: &OrdererDefaults
+        OrdererType: kafka
+        Addresses:
+                - orderer001:7050
+                - orderer002:7050
+                - orderer003:7050
+        Policies:
+                Readers:
+                        Type: ImplicitMeta
+                        Rule: "ANY Readers"
+                Writers:
+                        Type: ImplicitMeta
+                        Rule: "ANY Writers"
+                Admins:
+                        Type: ImplicitMeta
+                        Rule: "MAJORITY Admins"
+        BatchTimeout: 1s
+        BatchSize:
+                MaxMessageCount: 30
+                AbsoluteMaxBytes: 99 MB
+                PreferredMaxBytes: 512 KB
+        kafka:
+                Brokers:
+                        - kafka000:9092
+                        - kafka001:9092
+                        - kafka002:9092
+                        - kafka003:9092
+        Capabilities:
+                <<: *OrdererCapabilites
+        Organizations:
+
+Channel: &ChannelDefaults
+        Policies:
+                Readers:
+                        Type: ImplicitMeta
+                        Rule: "ANY Readers"
+                Writers:
+                        Type: ImplicitMeta
+                        Rule: "ANY Writers"
+                Admins:
+                        Type: ImplicitMeta
+                        Rule: "MAJORITY Admins"
+        Capabilities:
+                <<: *ChannelCapabilities
+
+Application: &ApplicationDefaults
+        Policies:
+                Readers:
+                        Type: ImplicitMeta
+                        Rule: "ANY Readers"
+                Writers:
+                        Type: ImplicitMeta
+                        Rule: "ANY Writers"
+                Admins:
+                        Type: ImplicitMeta
+                        Rule: "MAJORITY Admins"
+        Organizations:
+
+Profiles:
+        CarOrdererGenesis:
+                Capabilities:
+                        <<: *ChannelCapabilities
+                <<: *ChannelDefaults
+                Orderer:
+                        <<: *OrdererDefaults
+                        Organizations:
+                                - *DefaultOrdererOrg
+                Consortiums:
+                        CarConsortium:
+                                Organizations:
+                                        - *carAssociationOrg
+                                        - *carInsuranceOrg
+                                        - *carMaintenanceOrg
+        CarChannel:
+                Capabilities:
+                        <<: *ChannelCapabilities
+                <<: *ChannelDefaults
+                Consortium: CarConsortium
+                Application:
+                        <<: *ApplicationDefaults
+                        Organizations:
+                                - *carAssociationOrg
+                                - *carInsuranceOrg
+                                - *carMaintenanceOrg
+                        Capabilities:
+                                <<: *ApplicationCapabilites
+        CarSerialChannel:
+                Capabilities:
+                        <<: *ChannelCapabilities
+                <<: *ChannelDefaults
+                Consortium: CarConsortium
+                Application:
+                        <<: *ApplicationDefaults
+                        Organizations:
+                                - *carAssociationOrg
+                                - *carInsuranceOrg
+                                - *carMaintenanceOrg
+                        Capabilities:
+                                <<: *ApplicationCapabilites

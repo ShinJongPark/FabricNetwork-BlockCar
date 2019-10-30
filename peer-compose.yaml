@@ -1,0 +1,114 @@
+version: '2'
+services:
+  peer0.carAssociationOrg:
+    image: hyperledger/fabric-peer
+    container_name: peer0.carAssociationOrg
+    environment:
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=carconsortium_default # 배포 디렉토리 이름이 바뀔 경우 수정필요
+      - CORE_PEER_CHAINCODELISTENADDRESS=peer0.carAssociationOrg:7052
+      - CORE_PEER_ID=peer0.carAssociationOrg
+      - CORE_PEER_ADDRESS=peer0.carAssociationOrg:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.carAssociationOrg:7051 # peer0.copyrightOrg:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.carAssociationOrg:7051
+      - CORE_PEER_LOCALMSPID=carAssociationOrgMSP
+      - CORE_PEER_ADDRESSAUTODETECT=false
+      - CORE_PEER_GOSSIP_ORGLEADER=false
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+      - CORE_PEER_PROFILE_ENABLED=false
+      - CORE_PEER_MSPCONFIGPATH=/var/hyperledger/msp
+      - CORE_PEER_TLS_ENABLED=false
+      - CORE_PEER_TLS_CERT_FILE=/var/hyperledger/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/var/hyperledger/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/var/hyperledger/tls/cert.pem
+      - CORE_PEER_FILESYSTEMPATH=/var/hyperledger/peerledger
+    volumes:
+      - "/var/run/:/host/var/run/"
+      - "./chaincode:/var/hyperledger/chaincode/"
+      - "./carAssociationOrg/users/admin@carAssociationOrg/msp/:/var/hyperledger/users/msp"
+      - "./carAssociationOrg/peer0.carAssociationOrg/msp:/var/hyperledger/msp"
+      - "./carAssociationOrg/peer0.carAssociationOrg/tls/:/var/hyperledger/tls"
+      - "./carAssociationOrg/peer0.carAssociationOrg/ledger:/var/hyperledger/peerledger"
+      - "./channel-artifacts/:/var/hyperledger/production"
+    command: peer node start
+    expose:
+      - '7051'
+    ports:
+      - 7051:7051
+      - 7053:7053
+
+  peer0.carInsuranceOrg:
+    image: hyperledger/fabric-peer
+    container_name: peer0.carInsuranceOrg
+    environment:
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=carconsortium_default # 배포 디렉토리 이름이 바뀔 경우 수정필요
+      - CORE_PEER_CHAINCODELISTENADDRESS=peer0.carInsuranceOrg:7052 #peer0.digitalAuthorOrg:7052
+      - CORE_PEER_ID=peer0.carInsuranceOrg
+      - CORE_PEER_ADDRESS=peer0.carInsuranceOrg:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.carInsuranceOrg:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.carInsuranceOrg:7051
+      - CORE_PEER_LOCALMSPID=carInsuranceOrgMSP
+      - CORE_PEER_ADDRESSAUTODETECT=false
+      - CORE_PEER_GOSSIP_ORGLEADER=false
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+      - CORE_PEER_PROFILE_ENABLED=false
+      - CORE_PEER_MSPCONFIGPATH=/var/hyperledger/msp
+      - CORE_PEER_TLS_ENABLED=false
+      - CORE_PEER_TLS_CERT_FILE=/var/hyperledger/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/var/hyperledger/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/var/hyperledger/tls/cert.pem
+      - CORE_PEER_FILESYSTEMPATH=/var/hyperledger/peerledger
+    volumes:
+      - "/var/run/:/host/var/run/"
+      - "./chaincode:/var/hyperledger/chaincode/"
+      - "./carInsuranceOrg/users/admin@carInsuranceOrg/msp/:/var/hyperledger/users/msp"
+      - "./carInsuranceOrg/peer0.carInsuranceOrg/msp:/var/hyperledger/msp"
+      - "./carInsuranceOrg/peer0.carInsuranceOrg/tls/:/var/hyperledger/tls"
+      - "./carInsuranceOrg/peer0.carInsuranceOrg/ledger:/var/hyperledger/peerledger"
+      - "./channel-artifacts/:/var/hyperledger/production"
+    command: peer node start
+    ports:
+      - 8051:7051
+      - 8053:7053
+
+
+  peer0.carMaintenanceOrg:
+    image: hyperledger/fabric-peer
+    container_name: peer0.carMaintenanceOrg
+    environment:
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=carconsortium_default # 배포 디렉토리 이름이 바뀔 경우 수정필요
+      - CORE_PEER_CHAINCODELISTENADDRESS=peer0.carMaintenanceOrg:7052 #peer0.digitalAuthorOrg:7052
+      - CORE_PEER_ID=peer0.carMaintenanceOrg
+      - CORE_PEER_ADDRESS=peer0.carMaintenanceOrg:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.carMaintenanceOrg:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.carMaintenanceOrg:7051
+      - CORE_PEER_LOCALMSPID=carMaintenanceOrgMSP
+      - CORE_PEER_ADDRESSAUTODETECT=false
+      - CORE_PEER_GOSSIP_ORGLEADER=false
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+      - CORE_PEER_PROFILE_ENABLED=false
+      - CORE_PEER_MSPCONFIGPATH=/var/hyperledger/msp
+      - CORE_PEER_TLS_ENABLED=false
+      - CORE_PEER_TLS_CERT_FILE=/var/hyperledger/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/var/hyperledger/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/var/hyperledger/tls/cert.pem
+      - CORE_PEER_FILESYSTEMPATH=/var/hyperledger/peerledger
+    volumes:
+      - "/var/run/:/host/var/run/"
+      - "./chaincode:/var/hyperledger/chaincode/"
+      - "./carMaintenanceOrg/users/admin@carMaintenanceOrg/msp/:/var/hyperledger/users/msp"
+      - "./carMaintenanceOrg/peer0.carMaintenanceOrg/msp:/var/hyperledger/msp"
+      - "./carMaintenanceOrg/peer0.carMaintenanceOrg/tls/:/var/hyperledger/tls"
+      - "./carMaintenanceOrg/peer0.carMaintenanceOrg/ledger:/var/hyperledger/peerledger"
+      - "./channel-artifacts/:/var/hyperledger/production"
+    command: peer node start
+    # expose:
+    #   - '9051'
+    ports:
+      - 9051:7051
+      - 9053:7053
