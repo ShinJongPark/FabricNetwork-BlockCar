@@ -131,7 +131,7 @@ docker exec -e "CORE_PEER_LOCALMSPID=carAssociationOrgMSP" -e "CORE_PEER_MSPCONF
 docker exec -e "CORE_PEER_LOCALMSPID=carAssociationOrgMSP" -e "CORE_PEER_MSPCONFIGPATH=/var/hyperledger/users/msp" peer0.carAssociationOrg peer chaincode invoke -o orderer001:7050 -C carchannel001 -n car -c '{"Args":["registerAsset","testasset","stest"]}'
 # nodejs chaincode query
 # 생성된 체인코드에 쿼리를 날려 invoke 시 등록한 정보가 반환되면 정상동작
-docker exec -e "CORE_PEER_LOCALMSPID=carAssociationOrgMSP" -e "CORE_PEER_MSPCONFIGPATH=/var/hyperledger/users/msp" peer0.carAssociationOrg peer chaincode query -o orderer001:7050 -C carchannel001 -n car -c '{"Args":["query","testasset"]}'
+docker exec -e "CORE_PEER_LOCALMSPID=carAssociationOrgMSP" -e "CORE_PEER_MSPCONFIGPATH=/var/hyperledger/users/msp" peer0.carAssociationOrg peer chaincode query -o orderer001:7050 -C carchannel002 -n car_002_management -c '{"Args":["query","M12NAS22"]}'
 
 # nodejs chaincode package
 # 체인코드 수정 후 재배포를 위한 패키지 생성 명령어

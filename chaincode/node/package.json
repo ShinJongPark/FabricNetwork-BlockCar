@@ -1,7 +1,7 @@
 {
     "name": "car_001_Serial",
     "version": "1.0.0",
-    "description": "carSerial management chaincode",
+    "description": "Car Serial management chaincode",
     "engines":{
       "node": ">=8.4.0",
       "npm": ">=5.3.0"
