@@ -5,12 +5,12 @@ else
 fi
 
 
-# docker exec -e "CORE_PEER_LOCALMSPID=carAssociationOrgMSP" -e "CORE_PEER_MSPCONFIGPATH=/var/hyperledger/users/msp" peer0.carAssociationOrg peer chaincode package /var/hyperledger/chaincode/ccpack.out -n carSerial -v 0.2 -l node001 -p /var/hyperledger/chaincode/node001
-docker exec -e "CORE_PEER_LOCALMSPID=carAssociationOrgMSP" -e "CORE_PEER_MSPCONFIGPATH=/var/hyperledger/users/msp" peer0.carAssociationOrg peer chaincode package /var/hyperledger/chaincode/ccpack.out -n $2 -v $3 -l node -p /var/hyperledger/chaincode/node001
+# docker exec -e "CORE_PEER_LOCALMSPID=carAssociationOrgMSP" -e "CORE_PEER_MSPCONFIGPATH=/var/hyperledger/users/msp" peer0.carAssociationOrg peer chaincode package /var/hyperledger/chaincode/ccpack.out -n carSerial -v 0.2 -l node001 -p /var/hyperledger/chaincode/node
+docker exec -e "CORE_PEER_LOCALMSPID=carAssociationOrgMSP" -e "CORE_PEER_MSPCONFIGPATH=/var/hyperledger/users/msp" peer0.carAssociationOrg peer chaincode package /var/hyperledger/chaincode/ccpack.out -n $2 -v $3 -l node -p /var/hyperledger/chaincode/node
 
-docker exec -e "CORE_PEER_LOCALMSPID=carAssociationOrgMSP" -e "CORE_PEER_MSPCONFIGPATH=/var/hyperledger/users/msp" peer0.carAssociationOrg peer chaincode install -n $2 -v $3 -l node -p /var/hyperledger/chaincode/node001
-docker exec -e "CORE_PEER_LOCALMSPID=carInsuranceOrgMSP" -e "CORE_PEER_MSPCONFIGPATH=/var/hyperledger/users/msp" peer0.carInsuranceOrg peer chaincode install -n $2 -v $3 -l node -p /var/hyperledger/chaincode/node001
-docker exec -e "CORE_PEER_LOCALMSPID=carMaintenanceOrgMSP" -e "CORE_PEER_MSPCONFIGPATH=/var/hyperledger/users/msp" peer0.carMaintenanceOrg peer chaincode install -n $2 -v $3 -l node -p /var/hyperledger/chaincode/node001
+docker exec -e "CORE_PEER_LOCALMSPID=carAssociationOrgMSP" -e "CORE_PEER_MSPCONFIGPATH=/var/hyperledger/users/msp" peer0.carAssociationOrg peer chaincode install -n $2 -v $3 -l node -p /var/hyperledger/chaincode/node
+docker exec -e "CORE_PEER_LOCALMSPID=carInsuranceOrgMSP" -e "CORE_PEER_MSPCONFIGPATH=/var/hyperledger/users/msp" peer0.carInsuranceOrg peer chaincode install -n $2 -v $3 -l node -p /var/hyperledger/chaincode/node
+docker exec -e "CORE_PEER_LOCALMSPID=carMaintenanceOrgMSP" -e "CORE_PEER_MSPCONFIGPATH=/var/hyperledger/users/msp" peer0.carMaintenanceOrg peer chaincode install -n $2 -v $3 -l node -p /var/hyperledger/chaincode/node
 
 
 
